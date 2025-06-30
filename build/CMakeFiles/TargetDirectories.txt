@@ -1,0 +1,3 @@
+/home/marcos/Documents/UnB/Compressao/JPEG/build/CMakeFiles/JPEG.dir
+/home/marcos/Documents/UnB/Compressao/JPEG/build/CMakeFiles/edit_cache.dir
+/home/marcos/Documents/UnB/Compressao/JPEG/build/CMakeFiles/rebuild_cache.dir

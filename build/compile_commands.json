@@ -1,0 +1,12 @@
+[
+{
+  "directory": "/home/marcos/Documents/UnB/Compressao/JPEG/build",
+  "command": "/usr/bin/g++  -I/home/marcos/Documents/UnB/Compressao/JPEG/includes -isystem /usr/include/opencv4 -g -std=gnu++14 -o CMakeFiles/JPEG.dir/main.cpp.o -c /home/marcos/Documents/UnB/Compressao/JPEG/main.cpp",
+  "file": "/home/marcos/Documents/UnB/Compressao/JPEG/main.cpp"
+},
+{
+  "directory": "/home/marcos/Documents/UnB/Compressao/JPEG/build",
+  "command": "/usr/bin/g++  -I/home/marcos/Documents/UnB/Compressao/JPEG/includes -isystem /usr/include/opencv4 -g -std=gnu++14 -o CMakeFiles/JPEG.dir/src/JPEG.cpp.o -c /home/marcos/Documents/UnB/Compressao/JPEG/src/JPEG.cpp",
+  "file": "/home/marcos/Documents/UnB/Compressao/JPEG/src/JPEG.cpp"
+}
+]
