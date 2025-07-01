@@ -50,6 +50,53 @@ void JPEG::compressaoJPEG() {
     }
 }
 
-void JPEG::processarCanal(cv::Mat canal) {
-    
+void JPEG::processarCanal(const cv::Mat &canal) {
+    cv::Mat matrizComPadding = padding(canal);
+
+    // Percorrendo os blocos de 8x8
+    for (int i = 0; i < matrizComPadding.rows; i += 8) {
+        for (int j = 0; j < matrizComPadding.cols; j += 8) {
+        
+        // Extraindo o bloco 8x8
+        cv::Rect regiaoDoBloco(j, i, 8, 8);
+        cv::Mat bloco8x8 = matrizComPadding(regiaoDoBloco).clone();
+        
+        // Level shift
+        cv::Mat blocoShift;
+        bloco8x8.convertTo(blocoShift, CV_32F); // Converter para float pois a matriz original é uint8_t
+        blocoShift -= 128;
+
+        // DCT
+        cv::Mat blocoDCT;
+        cv::dct(blocoShift, blocoDCT); // Aplica a DCT
+
+        // Quantização
+        cv::Mat blocoQuantizado;
+        blocoQuantizado = quantizarBloco(blocoDCT);
+        
+    }
+}
+}
+
+cv::Mat JPEG::padding(const cv::Mat &matriz) {
+    size_t linhas = matriz.rows;
+    size_t colunas = matriz.cols;
+
+    // Calcula o padding para cada linha (pode ser 0)
+    size_t padding_linhas = (8 - (linhas % 8)) % 8;
+    size_t padding_colunas = (8 - (colunas % 8)) % 8;
+
+    cv::Mat matrizComPadding;
+
+    // Copia a matriz antiga para a nova realizando o padding (para direita e para baixo, quando necessário)
+    // replicando a última linha/coluna
+    cv::copyMakeBorder(matriz, matrizComPadding, 0, padding_linhas, 0, padding_colunas, cv::BORDER_REPLICATE);
+
+    return matrizComPadding;
+}
+
+cv::Mat JPEG::quantizarBloco(cv::Mat bloco, cv::Mat tabelaQuantizacao) {
+    cv::Mat blocoQuantizado;
+
+
 }
