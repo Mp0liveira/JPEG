@@ -15,7 +15,7 @@ private:
     std::string fileName;
     void processarCanal(const cv::Mat &canal, TipoCanal tipo);
     cv::Mat padding(const cv::Mat &matriz);
-    cv::Mat quantizarBloco(cv::Mat bloco, TipoCanal tipo);
+    cv::Mat quantizarBloco(const cv::Mat &bloco, TipoCanal tipo);
     cv::Mat tabelaLuminancia;
     cv::Mat tabelaCrominancia;
 

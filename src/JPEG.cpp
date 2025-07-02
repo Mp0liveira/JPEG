@@ -118,8 +118,8 @@ void JPEG::processarCanal(const cv::Mat &canal, TipoCanal tipo) {
         cv::Mat blocoQuantizado;
         blocoQuantizado = quantizarBloco(blocoDCT, tipo);
         
+        }
     }
-}
 }
 
 cv::Mat JPEG::padding(const cv::Mat &matriz) {
@@ -139,16 +139,32 @@ cv::Mat JPEG::padding(const cv::Mat &matriz) {
     return matrizComPadding;
 }
 
-cv::Mat JPEG::quantizarBloco(cv::Mat bloco, TipoCanal tipo) {
-    cv::Mat blocoQuantizado;
+cv::Mat JPEG::quantizarBloco(const cv::Mat &bloco, TipoCanal tipo) {
+    cv::Mat temp;
 
     // Dividindo cada elemento de Aij pelo correspondente Bij
     // A tabela de quantização correta é escolhida de acordo com seu tipo
     if (tipo == TipoCanal::Luminancia) {
-        blocoQuantizado = bloco / this->tabelaLuminancia;
+        temp = bloco / this->tabelaLuminancia;
     } else if (tipo == TipoCanal::Crominancia) {
-        blocoQuantizado = bloco / this->tabelaCrominancia;
+        temp = bloco / this->tabelaCrominancia;
     }
+
+    cv::Mat blocoQuantizadoFloat = temp.clone();
+
+    for (int i = 0; i < blocoQuantizadoFloat.rows; ++i) {
+        // Pega um ponteiro para o início da linha 'i'
+        float* ptr_linha = blocoQuantizadoFloat.ptr<float>(i);
+
+        // Itera sobre cada coluna da linha atual usando o ponteiro
+        for (int j = 0; j < blocoQuantizadoFloat.cols; ++j) {
+            // Aplica a função de arredondamento diretamente no elemento
+            ptr_linha[j] = std::round(ptr_linha[j]);
+        }
+    }
+
+    cv::Mat blocoQuantizado;
+    blocoQuantizadoFloat.convertTo(blocoQuantizado, CV_32S);
 
     return blocoQuantizado;
 }
