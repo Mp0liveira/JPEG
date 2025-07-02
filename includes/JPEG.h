@@ -18,6 +18,13 @@ private:
     cv::Mat quantizarBloco(const cv::Mat &bloco, TipoCanal tipo);
     cv::Mat tabelaLuminancia;
     cv::Mat tabelaCrominancia;
+    std::map<int, std::string> gerarTabelaHuffman(const std::vector<int>& bits, const std::vector<unsigned char>& huffval);
+    // Tabelas de Huffman (mapa de simbolo -> código binário)
+    std::map<int, std::string> tabelaLuminanciaDC;
+    std::map<int, std::string> tabelaCrominanciaDC;
+    std::map<int, std::string> tabelaLuminanciaAC;
+    std::map<int, std::string> tabelaCrominanciaAC;
+    int getCategoriaDC(int diferenca);
 
 public:
     void compressaoJPEG();
