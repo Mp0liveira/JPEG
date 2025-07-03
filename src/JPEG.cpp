@@ -92,12 +92,13 @@ void JPEG::compressaoJPEG() {
     }
 
     cv::Mat imagemParaProcessar;
+    std::string bitstream = "";
 
     // Verificar o número de canais (imagem em escala de cinza, RGB ou RGBA)
     if (imagemOriginal.channels() == 1) {
         std::cout << "Imagem em tom de cinza detectada. Iniciando compressão..." << std::endl;
         imagemParaProcessar = imagemOriginal;
-        processarCanal(imagemParaProcessar, TipoCanal::Luminancia);
+        bitstream += processarCanal(imagemParaProcessar, TipoCanal::Luminancia);
 
     } else if (imagemOriginal.channels() == 3) {
         std::cout << "Imagem em escala RGB. Iniciando compressão..." << std::endl;
@@ -112,9 +113,9 @@ void JPEG::compressaoJPEG() {
         cv::Mat Cb = canaisImagem[2];
         
         // Processar cada canal individualmente
-        processarCanal(Y, TipoCanal::Luminancia);
-        processarCanal(Cr, TipoCanal::Crominancia);
-        processarCanal(Cb, TipoCanal::Crominancia);
+        bitstream += processarCanal(Y, TipoCanal::Luminancia);
+        bitstream += processarCanal(Cr, TipoCanal::Crominancia);
+        bitstream += processarCanal(Cb, TipoCanal::Crominancia);
 
     } else if (imagemOriginal.channels() == 4) {
         std::cout << "Imagem em escalar RGBA. Iniciando compressão..." << std::endl;
@@ -132,16 +133,17 @@ void JPEG::compressaoJPEG() {
         cv::Mat Cb = canaisImagem[2];
 
         // Processar cada canal individualmente
-        processarCanal(Y, TipoCanal::Luminancia);
-        processarCanal(Cr, TipoCanal::Crominancia);
-        processarCanal(Cb, TipoCanal::Crominancia);
+        bitstream += processarCanal(Y, TipoCanal::Luminancia);
+        bitstream += processarCanal(Cr, TipoCanal::Crominancia);
+        bitstream += processarCanal(Cb, TipoCanal::Crominancia);
     }
 }
 
-void JPEG::processarCanal(const cv::Mat &canal, TipoCanal tipo) {
+std::string JPEG::processarCanal(const cv::Mat &canal, TipoCanal tipo) {
     cv::Mat matrizComPadding = padding(canal);
     int diferenca = 0;
     int DCAnterior = 0;
+    std::string bitstreamCanal = "";
 
     // Percorrendo os blocos de 8x8
     for (int i = 0; i < matrizComPadding.rows; i += 8) {
@@ -183,10 +185,14 @@ void JPEG::processarCanal(const cv::Mat &canal, TipoCanal tipo) {
 
         // Codificação AC
         std::vector<int> coeficientesZigZag = zigzagAC(blocoQuantizado);
+        std::string finalAC = codificarAC(coeficientesZigZag, tipo);
 
-
+        bitstreamCanal += finalDC;
+        bitstreamCanal += finalAC;
         }
     }
+
+    return bitstreamCanal;
 }
 
 cv::Mat JPEG::padding(const cv::Mat &matriz) {
@@ -318,4 +324,53 @@ std::vector<int> JPEG::zigzagAC(const cv::Mat &blocoQuantizado) {
     }
 
     return coeficientesZigZag;
+}
+
+std::string JPEG::codificarAC(std::vector<int> coeficientesZigZag, TipoCanal tipo) {
+    std::string finalAC = "";
+
+    int qtdZeros = 0;
+
+    for (int i = 0; i < 63; i++) {
+        if (coeficientesZigZag[i] == 0) {
+            qtdZeros++;
+        } else {
+            while (qtdZeros >= 16) {
+                // Símbolo ZRL é 0xF0
+                if (tipo == TipoCanal::Luminancia) {
+                    finalAC += this->tabelaLuminanciaAC[0xF0];
+                } else {
+                    finalAC += this->tabelaCrominanciaAC[0xF0];
+                }
+                qtdZeros -= 16;
+            }
+
+            // Já codifica o coeficiente
+            int categoria = getCategoria(coeficientesZigZag[i]);
+            // Forma o símbolo Z/C (zeros restantes, categoria)
+            uint8_t simbolo = (qtdZeros << 4) | categoria;
+
+            // Código de Huffman para o símbolo
+            if (tipo == TipoCanal::Luminancia) {
+                finalAC += this->tabelaLuminanciaAC[simbolo];
+            } else if (tipo == TipoCanal::Crominancia) {
+                finalAC += this->tabelaCrominanciaAC[simbolo];
+            }
+            
+            finalAC += getValor(coeficientesZigZag[i], categoria);
+
+            qtdZeros = 0;
+        }
+    }
+
+    // Símbolo EOB (0X00)
+    if (qtdZeros > 0) {
+        if (tipo == TipoCanal::Luminancia) {
+            finalAC += this->tabelaLuminanciaAC[0x00];
+        } else {
+            finalAC += this->tabelaCrominanciaAC[0x00];
+        }
+    }
+    
+    return finalAC;
 }

@@ -13,7 +13,7 @@ enum class TipoCanal {
 class JPEG {
 private:
     std::string fileName;
-    void processarCanal(const cv::Mat &canal, TipoCanal tipo);
+    std::string processarCanal(const cv::Mat &canal, TipoCanal tipo);
     cv::Mat padding(const cv::Mat &matriz);
     cv::Mat quantizarBloco(const cv::Mat &bloco, TipoCanal tipo);
     cv::Mat tabelaLuminancia;
@@ -27,6 +27,7 @@ private:
     int getCategoria(const int &diferenca);
     std::string getValor(const int &diferenca, const int &categoria);
     std::vector<int> zigzagAC(const cv::Mat &blocoQuantizado);
+    std::string codificarAC(std::vector<int> coeficientesZigZag, TipoCanal tipo);
 
 public:
     void compressaoJPEG();
