@@ -24,7 +24,8 @@ private:
     std::map<int, std::string> tabelaCrominanciaDC;
     std::map<int, std::string> tabelaLuminanciaAC;
     std::map<int, std::string> tabelaCrominanciaAC;
-    int getCategoriaDC(int diferenca);
+    int getCategoria(int diferenca);
+    std::string JPEG::getValor(int diferenca, int categoria);
 
 public:
     void compressaoJPEG();

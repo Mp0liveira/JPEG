@@ -169,7 +169,7 @@ void JPEG::processarCanal(const cv::Mat &canal, TipoCanal tipo) {
         diferenca = DCAtual - DCAnterior;
         DCAnterior = DCAtual;
 
-        int categoria = getCategoriaDC(diferenca);
+        int categoria = getCategoria(diferenca);
         std::string codigoHuffmanDC;
 
         if (tipo == TipoCanal::Luminancia) {
@@ -178,7 +178,7 @@ void JPEG::processarCanal(const cv::Mat &canal, TipoCanal tipo) {
             codigoHuffmanDC = this->tabelaCrominanciaDC[categoria];
         }
 
-        std::string valorDC = getValorDC(diferenca, categoria);
+        std::string valorDC = getValor(diferenca, categoria);
         std::string finalDC = codigoHuffmanDC + valorDC;
 
         // Codificação AC
@@ -218,12 +218,10 @@ cv::Mat JPEG::quantizarBloco(const cv::Mat &bloco, TipoCanal tipo) {
     cv::Mat blocoQuantizadoFloat = temp.clone();
 
     for (int i = 0; i < blocoQuantizadoFloat.rows; ++i) {
-        // Pega um ponteiro para o início da linha 'i'
         float* ptr_linha = blocoQuantizadoFloat.ptr<float>(i);
 
-        // Itera sobre cada coluna da linha atual usando o ponteiro
         for (int j = 0; j < blocoQuantizadoFloat.cols; ++j) {
-            // Aplica a função de arredondamento diretamente no elemento
+            // Arredondar pro inteiro mais próximo é a mesma coisa que a operação de +0.5 e fazer um floor
             ptr_linha[j] = std::round(ptr_linha[j]);
         }
     }
@@ -263,7 +261,7 @@ std::map<int, std::string> JPEG::gerarTabelaHuffman(const std::vector<int>& bits
     return tabela;
 }
 
-int JPEG::getCategoriaDC(int diferenca) {
+int JPEG::getCategoria(int diferenca) {
 
     if (diferenca == 0) {
         return 0;
@@ -274,7 +272,7 @@ int JPEG::getCategoriaDC(int diferenca) {
     return static_cast<int>(std::floor(std::log2(moduloDiferenca))) + 1;
 }
 
-std::string getValorDC(int diferenca, int categoria) {
+std::string JPEG::getValor(int diferenca, int categoria) {
     if (categoria == 0) {
         return "";
     }
