@@ -182,6 +182,8 @@ void JPEG::processarCanal(const cv::Mat &canal, TipoCanal tipo) {
         std::string finalDC = codigoHuffmanDC + valorDC;
 
         // Codificação AC
+        std::vector<int> coeficientesZigZag = zigzagAC(blocoQuantizado);
+
 
         }
     }
@@ -261,7 +263,7 @@ std::map<int, std::string> JPEG::gerarTabelaHuffman(const std::vector<int>& bits
     return tabela;
 }
 
-int JPEG::getCategoria(int diferenca) {
+int JPEG::getCategoria(const int &diferenca) {
 
     if (diferenca == 0) {
         return 0;
@@ -272,7 +274,7 @@ int JPEG::getCategoria(int diferenca) {
     return static_cast<int>(std::floor(std::log2(moduloDiferenca))) + 1;
 }
 
-std::string JPEG::getValor(int diferenca, int categoria) {
+std::string JPEG::getValor(const int &diferenca, const int &categoria) {
     if (categoria == 0) {
         return "";
     }
@@ -292,4 +294,8 @@ std::string JPEG::getValor(int diferenca, int categoria) {
     }
 
     return valorDC;
+}
+
+std::vector<int> JPEG::zigzagAC(const cv::Mat &blocoQuantizado) {
+
 }

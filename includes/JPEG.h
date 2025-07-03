@@ -24,8 +24,9 @@ private:
     std::map<int, std::string> tabelaCrominanciaDC;
     std::map<int, std::string> tabelaLuminanciaAC;
     std::map<int, std::string> tabelaCrominanciaAC;
-    int getCategoria(int diferenca);
-    std::string JPEG::getValor(int diferenca, int categoria);
+    int getCategoria(const int &diferenca);
+    std::string getValor(const int &diferenca, const int &categoria);
+    std::vector<int> zigzagAC(const cv::Mat &blocoQuantizado);
 
 public:
     void compressaoJPEG();
