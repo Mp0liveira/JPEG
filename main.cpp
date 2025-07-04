@@ -1,8 +1,9 @@
 #include <iostream>
-#include <opencv2/opencv.hpp>
+#include "includes/JPEG.h"
 
 int main() {
-    // Use o caminho para 
+    JPEG jpeg("kodim03.png");
+    jpeg.compressaoJPEG();
 
     return 0;
 }

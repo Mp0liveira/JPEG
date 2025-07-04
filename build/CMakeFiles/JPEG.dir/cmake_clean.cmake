@@ -3,6 +3,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/JPEG.dir/main.cpp.o.d"
   "CMakeFiles/JPEG.dir/src/JPEG.cpp.o"
   "CMakeFiles/JPEG.dir/src/JPEG.cpp.o.d"
+  "CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o"
+  "CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o.d"
   "JPEG"
   "JPEG.pdb"
 )

@@ -9,7 +9,7 @@ find_package(OpenCV REQUIRED)
 # O include_directories e o target_link_libraries continuam iguais.
 include_directories(${OpenCV_INCLUDE_DIRS} includes)
 
-add_executable(JPEG main.cpp src/JPEG.cpp)
+add_executable(JPEG main.cpp src/JPEG.cpp src/ac_bitstream.cpp)
 
 target_link_libraries(JPEG ${OpenCV_LIBS})
 

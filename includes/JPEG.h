@@ -28,11 +28,29 @@ private:
     std::string getValor(const int &diferenca, const int &categoria);
     std::vector<int> zigzagAC(const cv::Mat &blocoQuantizado);
     std::string codificarAC(std::vector<int> coeficientesZigZag, TipoCanal tipo);
+    std::string writeHeader(uint16_t largura, uint16_t altura, uint8_t canais);
+    void writeFile(const std::string &bitstream);
 
 public:
     void compressaoJPEG();
     JPEG(const std::string &inputFile);
 
 };
+
+class JPEGdecoder {
+private:
+    std::string fileName;
+    std::string arrayBits(Bitstream &bs);
+    std::map<std::string, int> gerarDecoderHuffman(const std::vector<int>& bits, const std::vector<unsigned char>& huffval);
+    std::map<std::string, int> tabelaDecodeLuminanciaDC;
+    std::map<std::string, int> tabelaDecodeCrominanciaDC;
+    std::map<std::string, int> tabelaDecodeLuminanciaAC;
+    std::map<std::string, int> tabelaDecodeCrominanciaAC;
+
+public:
+    void descompressaoJPEG();
+    JPEGdecoder(const std::string &inputFile);
+}
+
 
 #endif //JPEG_H

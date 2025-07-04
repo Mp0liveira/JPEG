@@ -10,6 +10,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/marcos/Documents/UnB/Compressao/JPEG/main.cpp" "CMakeFiles/JPEG.dir/main.cpp.o" "gcc" "CMakeFiles/JPEG.dir/main.cpp.o.d"
   "/home/marcos/Documents/UnB/Compressao/JPEG/src/JPEG.cpp" "CMakeFiles/JPEG.dir/src/JPEG.cpp.o" "gcc" "CMakeFiles/JPEG.dir/src/JPEG.cpp.o.d"
+  "/home/marcos/Documents/UnB/Compressao/JPEG/src/ac_bitstream.cpp" "CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o" "gcc" "CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o.d"
   )
 
 # Targets to which this target links.

@@ -177,6 +177,30 @@ src/JPEG.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/JPEG.dir/build.make CMakeFiles/JPEG.dir/src/JPEG.cpp.s
 .PHONY : src/JPEG.cpp.s
 
+src/ac_bitstream.o: src/ac_bitstream.cpp.o
+.PHONY : src/ac_bitstream.o
+
+# target to build an object file
+src/ac_bitstream.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/JPEG.dir/build.make CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o
+.PHONY : src/ac_bitstream.cpp.o
+
+src/ac_bitstream.i: src/ac_bitstream.cpp.i
+.PHONY : src/ac_bitstream.i
+
+# target to preprocess a source file
+src/ac_bitstream.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/JPEG.dir/build.make CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.i
+.PHONY : src/ac_bitstream.cpp.i
+
+src/ac_bitstream.s: src/ac_bitstream.cpp.s
+.PHONY : src/ac_bitstream.s
+
+# target to generate assembly for a file
+src/ac_bitstream.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/JPEG.dir/build.make CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.s
+.PHONY : src/ac_bitstream.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -192,6 +216,9 @@ help:
 	@echo "... src/JPEG.o"
 	@echo "... src/JPEG.i"
 	@echo "... src/JPEG.s"
+	@echo "... src/ac_bitstream.o"
+	@echo "... src/ac_bitstream.i"
+	@echo "... src/ac_bitstream.s"
 .PHONY : help
 
 
