@@ -426,7 +426,7 @@ void JPEG::writeFile(const std::string &bitstream) {
     bs.flushesToFile("../ArquivosComprimidos/" + this->fileName + ".bin");
 }
 
-/// --------------------------------------------------------------------------------------------------
+/// -------------------------------------------------------------------------------------------------- ///
 
 JPEGdecoder::JPEGdecoder(const std::string &inputFile) {
 
