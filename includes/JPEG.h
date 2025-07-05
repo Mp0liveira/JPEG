@@ -3,6 +3,7 @@
 
 #include <string>
 #include "opencv2/opencv.hpp"
+#include "ac_bitstream.h"
 
 // Definição dos tipos de canal
 enum class TipoCanal {
@@ -37,20 +38,36 @@ public:
 
 };
 
+enum class TipoDecoder {
+    LuminanciaDC,
+    LuminanciaAC,
+    CrominanciaDC,
+    CrominanciaAC
+};
+
 class JPEGdecoder {
 private:
     std::string fileName;
-    std::string arrayBits(Bitstream &bs);
+    void arrayBits(Bitstream &bs);
+    std::string inputBuffer = "";
+    uint8_t canais;
+    uint16_t largura;
+    uint16_t altura; 
+    // Variável que indica o bit que está sendo processado
+    size_t posicaoLeitura = 0;
     std::map<std::string, int> gerarDecoderHuffman(const std::vector<int>& bits, const std::vector<unsigned char>& huffval);
     std::map<std::string, int> tabelaDecodeLuminanciaDC;
     std::map<std::string, int> tabelaDecodeCrominanciaDC;
     std::map<std::string, int> tabelaDecodeLuminanciaAC;
     std::map<std::string, int> tabelaDecodeCrominanciaAC;
+    void lerHeader();
+    int decodificaSimbolo(TipoDecoder tipo);
+    int decodificaValor(const std::string &diferencaString, const int &categoria);
 
 public:
     void descompressaoJPEG();
     JPEGdecoder(const std::string &inputFile);
-}
+};
 
 
 #endif //JPEG_H

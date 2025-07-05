@@ -1,5 +1,4 @@
 #include "../includes/JPEG.h"
-#include "../includes/ac_bitstream.h"
 #include <vector>
 
 JPEG::JPEG(const std::string &inputFile) {
@@ -307,13 +306,13 @@ std::string JPEG::getValor(const int &diferenca, const int &categoria) {
         valorCodificar = diferenca + (1 << categoria) - 1;
     }
 
-    std::string valorDC = "";
+    std::string valor = "";
     for (int i = 0; i < categoria; ++i) {
-        valorDC = ((valorCodificar & 1) ? "1" : "0") + valorDC;
+        valor = ((valorCodificar & 1) ? "1" : "0") + valor;
         valorCodificar >>= 1;
     }
 
-    return valorDC;
+    return valor;
 }
 
 std::vector<int> JPEG::zigzagAC(const cv::Mat &blocoQuantizado) {
@@ -474,16 +473,13 @@ JPEGdecoder::JPEGdecoder(const std::string &inputFile) {
     this->tabelaDecodeCrominanciaAC = gerarDecoderHuffman(bitsCrominanciaAC, huffvalCrominanciaAC);
 }
 
-std::string JPEGdecoder::arrayBits(Bitstream& bs) {
+void JPEGdecoder::arrayBits(Bitstream& bs) {
     uint64_t size = bs.totalSize();
-    std::string inputBuffer = "";
 
     for (uint64_t i = 0; i < size; i++) {
         bool bit = bs.readBit();
-        inputBuffer += bit ? '1' : '0';
+        this->inputBuffer += bit ? '1' : '0';
     }
-
-    return inputBuffer;
 }
 
 std::map<std::string, int> JPEGdecoder::gerarDecoderHuffman(const std::vector<int>& bits, const std::vector<unsigned char>& huffval) {
@@ -515,15 +511,134 @@ std::map<std::string, int> JPEGdecoder::gerarDecoderHuffman(const std::vector<in
     return tabela;
 }
 
+void JPEGdecoder::lerHeader() {
+    // Header = canais + altura + largura
+    std::string canais = inputBuffer.substr(0, 8);
+    std::string altura = inputBuffer.substr(8, 16);
+    std::string largura = inputBuffer.substr(16, 32);
 
+    this->canais = static_cast<uint8_t>(std::stoi(canais, nullptr, 2));
+    this->altura = static_cast<uint16_t>(std::stoi(altura, nullptr, 2));
+    this->largura = static_cast<uint16_t>(std::stoi(largura, nullptr, 2));
+
+    this->posicaoLeitura = 32;
+}
+
+int JPEGdecoder::decodificaSimbolo(TipoDecoder tipo) {
+    std::string codigoAtual = "";
+    std::map<std::string, int> tabelaDecode;
+
+    switch (tipo) {
+    case TipoDecoder::LuminanciaDC:
+        tabelaDecode = tabelaDecodeLuminanciaDC;
+        break;
+    case TipoDecoder::LuminanciaAC:
+        tabelaDecode = tabelaDecodeLuminanciaAC;
+        break;
+    case TipoDecoder::CrominanciaDC:
+        tabelaDecode = tabelaDecodeCrominanciaDC;
+        break;
+    case TipoDecoder::CrominanciaAC:
+        tabelaDecode = tabelaDecodeCrominanciaAC;
+        break;
+    }
+
+    while (this->posicaoLeitura < inputBuffer.length()) {
+        codigoAtual += inputBuffer[this->posicaoLeitura];
+        this->posicaoLeitura++;
+        int categoria;
+
+        auto it = tabelaDecode.find(codigoAtual);
+        if (it != tabelaDecode.end()) {
+            categoria = it->second;
+            return categoria;
+        }  
+    }
+
+    // Se retornar -1 tem alguma coisa muito errada...
+    return -1;
+}
+
+int JPEGdecoder::decodificaValor(const std::string &valorString, const int &categoria) {
+    int valor = std::stoi(valorString, nullptr, 2);
+
+    // 1° bit = 1 -> próprio valor, caso contrário é o complemento de 1
+    if (valorString[0] == '0') {
+        int range = 1 << categoria;
+        valor = valor - (range - 1);
+    }
+
+    return valor;
+}
 
 void JPEGdecoder::descompressaoJPEG() {
     // Biblioteca auxiliar para ler os bits
     Bitstream bs(this->fileName);
+    // Preencher inputBuffer
+    arrayBits(bs);
+    // Ler as informações do header e posicionar a variável auxiliar de ponteiro para o início do conteúdo "útil" do bitstream
+    lerHeader();
 
-    std::string inputBuffer = arrayBits(bs);
+    // Armazena as camadas reconstruídas na ordem Y, Cr e Cb, se existirem
+    std::vector<cv::Mat> camadasReconstruidas;
 
-    // Processo de decodificação do Huffman
-    
+    int DCAnterior = 0;
+    // Iterar sobre cada quantidade de camada
+    for (int i = 0; i < canais; i++) {
+        // Zera para o cálculo de cada canal i
+        DCAnterior = 0;
+        // Decodificar um bloco -> 64 coeficientes (1DC e 63 AC)
+        // Primeira coeficiente-> Tabela DC
+        int categoriaDC;
+        // i = 0 significa luminância
+        if (i == 0) {
+            categoriaDC = decodificaSimbolo(TipoDecoder::LuminanciaDC);
+        } else {
+            categoriaDC = decodificaSimbolo(TipoDecoder::CrominanciaDC);
+        }
+
+        // Decodifica a diferença
+        std::string diferencaString = inputBuffer.substr(this->posicaoLeitura, categoriaDC);
+        int diferencaDC = decodificaValor(diferencaString, categoriaDC);
+        int DCAtual = DCAnterior + diferencaDC;
+        DCAnterior = DCAtual;
+
+        // Próximos 63 coeficientes -> Tabela AC
+        std::vector<int> coeficientesZigZag;
+
+        while(coeficientesZigZag.size() < 63) {
+            // Lembrando: símbolo = Z/C -> 4 bits / 4 bits
+            uint8_t simbolo; 
+            if (i == 0) {
+                simbolo = decodificaSimbolo(TipoDecoder::LuminanciaAC);
+            } else {
+                simbolo = decodificaSimbolo(TipoDecoder::CrominanciaAC);
+            }
+
+            // 4 bits superiores
+            int qtdZeros = (0xF0 & simbolo);
+            // 4 bits inferiores
+            int categoriaAC = (0x0F & simbolo);
+            
+            // Verificar condições especiais (ZRL e EOB)
+            if (simbolo == 0xF0) { // ZRL
+                coeficientesZigZag.insert(coeficientesZigZag.end(), 16, 0);
+            } else if (simbolo == 0x00) { // EOB
+                int posicoesRestantes = 63 - coeficientesZigZag.size();
+                coeficientesZigZag.insert(coeficientesZigZag.end(), posicoesRestantes, 0);
+            } else {
+                // Indica o próximo valor que vem depois dos 0s inseridos
+                std::string valorString = inputBuffer.substr(this->posicaoLeitura, categoriaAC);
+                int valorAC = decodificaValor(valorString, categoriaAC);
+                // Adicionando a quantidade de 0s
+                coeficientesZigZag.insert(coeficientesZigZag.end(), qtdZeros, 0);
+                coeficientesZigZag.push_back(valorAC);
+            }
+
+        }
+
+        // Preencher o bloco 8x8
+        
+    }
 
 }
