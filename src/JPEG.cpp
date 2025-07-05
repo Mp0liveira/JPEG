@@ -193,7 +193,7 @@ std::string JPEG::processarCanal(const cv::Mat &canal, TipoCanal tipo) {
         std::string valorDC = getValor(diferenca, categoria);
         std::string finalDC = codigoHuffmanDC + valorDC;
 
-        if (i == 208 && j == 72 && tipo == TipoCanal::Luminancia) {
+        if (i == 48 && j == 40 && tipo == TipoCanal::Luminancia) {
                 std::cout << "Diferença: " << diferenca << std::endl;
                 std::cout << "Categoria: " << categoria << std::endl;
                 std::cout << "Codigo Huffman: " << codigoHuffmanDC << std::endl;
@@ -550,15 +550,17 @@ std::map<std::string, int> JPEGdecoder::gerarDecoderHuffman(const std::vector<in
 
 void JPEGdecoder::lerHeader() {
     // Header = canais + altura + largura
+    const int TAMANHO_HEADER = 8 + 16 + 16; // 40 bits
+
     std::string canais = inputBuffer.substr(0, 8);
     std::string altura = inputBuffer.substr(8, 16);
-    std::string largura = inputBuffer.substr(16, 32);
+    std::string largura = inputBuffer.substr(24, 16);
 
     this->canais = static_cast<uint8_t>(std::stoi(canais, nullptr, 2));
     this->altura = static_cast<uint16_t>(std::stoi(altura, nullptr, 2));
     this->largura = static_cast<uint16_t>(std::stoi(largura, nullptr, 2));
 
-    this->posicaoLeitura = 32;
+    this->posicaoLeitura = TAMANHO_HEADER;
 }
 
 int JPEGdecoder::decodificaSimbolo(TipoDecoder tipo) {
@@ -668,6 +670,7 @@ void JPEGdecoder::descompressaoJPEG() {
     // Ler as informações do header e posicionar a variável auxiliar de ponteiro para o início do conteúdo "útil" do bitstream
     lerHeader();
 
+    std::cout << inputBuffer.size();
     // Armazena as camadas reconstruídas na ordem Y, Cr e Cb, se existirem
     std::vector<cv::Mat> camadasReconstruidas;
 

@@ -795,7 +795,11 @@ CMakeFiles/JPEG.dir/src/JPEG.cpp.o: ../src/JPEG.cpp \
   /usr/include/opencv4/opencv2/video.hpp \
   /usr/include/opencv4/opencv2/video/tracking.hpp \
   /usr/include/opencv4/opencv2/video/background_segm.hpp \
-  ../includes/ac_bitstream.h
+  ../includes/ac_bitstream.h \
+  /usr/include/c++/12/fstream \
+  /usr/include/x86_64-linux-gnu/c++/12/bits/basic_file.h \
+  /usr/include/x86_64-linux-gnu/c++/12/bits/c++io.h \
+  /usr/include/c++/12/bits/fstream.tcc
 
 CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o: ../src/ac_bitstream.cpp \
   /usr/include/stdc-predef.h \
