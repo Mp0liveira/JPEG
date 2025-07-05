@@ -50,6 +50,8 @@ private:
     std::string fileName;
     void arrayBits(Bitstream &bs);
     std::string inputBuffer = "";
+    cv::Mat tabelaLuminancia;
+    cv::Mat tabelaCrominancia;
     uint8_t canais;
     uint16_t largura;
     uint16_t altura; 
@@ -63,6 +65,8 @@ private:
     void lerHeader();
     int decodificaSimbolo(TipoDecoder tipo);
     int decodificaValor(const std::string &diferencaString, const int &categoria);
+    cv::Mat preencherBloco(const int &DCAtual, const std::vector<int> &coeficientesZigZag);
+    cv::Mat desquantizarBloco(const cv::Mat &blocoQuantizado, TipoCanal tipo);
 
 public:
     void descompressaoJPEG();

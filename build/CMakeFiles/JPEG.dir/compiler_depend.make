@@ -396,7 +396,8 @@ CMakeFiles/JPEG.dir/main.cpp.o: ../main.cpp \
   /usr/include/opencv4/opencv2/stitching/detail/camera.hpp \
   /usr/include/opencv4/opencv2/video.hpp \
   /usr/include/opencv4/opencv2/video/tracking.hpp \
-  /usr/include/opencv4/opencv2/video/background_segm.hpp
+  /usr/include/opencv4/opencv2/video/background_segm.hpp \
+  ../includes/ac_bitstream.h
 
 CMakeFiles/JPEG.dir/src/JPEG.cpp.o: ../src/JPEG.cpp \
   /usr/include/stdc-predef.h \

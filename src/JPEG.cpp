@@ -28,10 +28,10 @@ JPEG::JPEG(const std::string &inputFile) {
     };
 
     cv::Mat tempLuminancia(8, 8, CV_8UC1, dadosLuminancia);
-    tempLuminancia.convertTo(tabelaLuminancia, CV_32F);
+    tempLuminancia.convertTo(this->tabelaLuminancia, CV_32F);
 
     cv::Mat tempCrominancia(8, 8, CV_8UC1, dadosCrominancia);
-    tempCrominancia.convertTo(tabelaCrominancia, CV_32F);
+    tempCrominancia.convertTo(this->tabelaCrominancia, CV_32F);
 
     // --- 2. Inicialização das Tabelas de Huffman ---
 
@@ -192,6 +192,14 @@ std::string JPEG::processarCanal(const cv::Mat &canal, TipoCanal tipo) {
 
         std::string valorDC = getValor(diferenca, categoria);
         std::string finalDC = codigoHuffmanDC + valorDC;
+
+        if (i == 208 && j == 72 && tipo == TipoCanal::Luminancia) {
+                std::cout << "Diferença: " << diferenca << std::endl;
+                std::cout << "Categoria: " << categoria << std::endl;
+                std::cout << "Codigo Huffman: " << codigoHuffmanDC << std::endl;
+                std::cout << "ValorDC: " << valorDC << std::endl;
+                std::cout << "FinaldDC: " << finalDC << std::endl;
+            }
         //std::cout << "dc" << std::endl;
 
         // Codificação AC
@@ -430,6 +438,35 @@ void JPEG::writeFile(const std::string &bitstream) {
 JPEGdecoder::JPEGdecoder(const std::string &inputFile) {
 
     this->fileName = inputFile;
+
+    // Tabela de quantização para Y 
+    unsigned char dadosLuminancia[64] = {
+    16, 11, 10, 16, 24, 40, 51, 61,
+    12, 12, 14, 19, 26, 58, 60, 55,
+    14, 13, 16, 24, 40, 57, 69, 56,
+    14, 17, 22, 29, 51, 87, 80, 62,
+    18, 22, 37, 56, 68, 109, 103, 77,
+    24, 35, 55, 64, 81, 104, 113, 92,
+    49, 64, 78, 87, 103, 121, 120, 101,
+    72, 92, 95, 98, 112, 100, 103, 99
+    };
+    // Tabela de quantização para Cr e Cb
+    unsigned char dadosCrominancia[64] = {
+    17, 18, 24, 47, 99, 99, 99, 99,
+    18, 21, 26, 66, 99, 99, 99, 99,
+    24, 26, 56, 99, 99, 99, 99, 99,
+    47, 66, 99, 99, 99, 99, 99, 99,
+    99, 99, 99, 99, 99, 99, 99, 99,
+    99, 99, 99, 99, 99, 99, 99, 99,
+    99, 99, 99, 99, 99, 99, 99, 99,
+    99, 99, 99, 99, 99, 99, 99, 99
+    };
+
+    cv::Mat tempLuminancia(8, 8, CV_8UC1, dadosLuminancia);
+    tempLuminancia.convertTo(this->tabelaLuminancia, CV_32F);
+
+    cv::Mat tempCrominancia(8, 8, CV_8UC1, dadosCrominancia);
+    tempCrominancia.convertTo(this->tabelaCrominancia, CV_32F);
     // Dados brutos (bits e huffval)
     std::vector<int> bitsLuminanciaDC = {0, 1, 5, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0};
     std::vector<unsigned char> huffvalLuminanciaDC = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
@@ -527,19 +564,24 @@ void JPEGdecoder::lerHeader() {
 int JPEGdecoder::decodificaSimbolo(TipoDecoder tipo) {
     std::string codigoAtual = "";
     std::map<std::string, int> tabelaDecode;
+    int tipoPRint;
 
     switch (tipo) {
     case TipoDecoder::LuminanciaDC:
         tabelaDecode = tabelaDecodeLuminanciaDC;
+        tipoPRint = 0;
         break;
     case TipoDecoder::LuminanciaAC:
         tabelaDecode = tabelaDecodeLuminanciaAC;
+        tipoPRint = 1;
         break;
     case TipoDecoder::CrominanciaDC:
         tabelaDecode = tabelaDecodeCrominanciaDC;
+        tipoPRint = 2;
         break;
     case TipoDecoder::CrominanciaAC:
         tabelaDecode = tabelaDecodeCrominanciaAC;
+        tipoPRint = 3;
         break;
     }
 
@@ -554,12 +596,17 @@ int JPEGdecoder::decodificaSimbolo(TipoDecoder tipo) {
             return categoria;
         }  
     }
-
+    std::cout << "Tipo da tabela sem correspondência de símbolo: " << tipoPRint << std::endl;
+    //std::cout << "STRING NAO ENCOTNRADA NA TABELA: " << codigoAtual << std::endl;
     // Se retornar -1 tem alguma coisa muito errada...
     return -1;
 }
 
 int JPEGdecoder::decodificaValor(const std::string &valorString, const int &categoria) {
+    if (categoria == 0) {
+        return 0;
+    }
+
     int valor = std::stoi(valorString, nullptr, 2);
 
     // 1° bit = 1 -> próprio valor, caso contrário é o complemento de 1
@@ -571,9 +618,51 @@ int JPEGdecoder::decodificaValor(const std::string &valorString, const int &cate
     return valor;
 }
 
+cv::Mat JPEGdecoder::preencherBloco(const int &DCAtual, const std::vector<int> &coeficientesZigZag) {
+    cv::Mat blocoQuantizado(8, 8, CV_32S);
+    const int coordenadasZigZag[63][2] = {
+        {0,1}, {1,0}, {2,0}, {1,1}, {0,2}, {0,3}, {1,2}, {2,1},
+        {3,0}, {4,0}, {3,1}, {2,2}, {1,3}, {0,4}, {0,5}, {1,4},
+        {2,3}, {3,2}, {4,1}, {5,0}, {6,0}, {5,1}, {4,2}, {3,3},
+        {2,4}, {1,5}, {0,6}, {0,7}, {1,6}, {2,5}, {3,4}, {4,3},
+        {5,2}, {6,1}, {7,0}, {7,1}, {6,2}, {5,3}, {4,4}, {3,5},
+        {2,6}, {1,7}, {2,7}, {3,6}, {4,5}, {5,4}, {6,3}, {7,2},
+        {7,3}, {6,4}, {5,5}, {4,6}, {3,7}, {4,7}, {5,6}, {6,5},
+        {7,4}, {7,5}, {6,6}, {5,7}, {6,7}, {7,6}, {7,7}
+    };
+
+    blocoQuantizado.at<int>(0,0) = DCAtual;
+
+    for (int i = 0; i < 63; i++) {
+        int linha = coordenadasZigZag[i][0];
+        int coluna = coordenadasZigZag[i][1];
+        blocoQuantizado.at<int>(linha, coluna) = coeficientesZigZag[i];
+    }
+
+    return blocoQuantizado;
+}
+
+cv::Mat JPEGdecoder::desquantizarBloco(const cv::Mat &blocoQuantizado, TipoCanal tipo) {
+    cv::Mat tabelaQuantizacao;
+    cv::Mat blocoDesquantizado;
+    cv::Mat blocoQuantizadoFloat;
+    blocoQuantizado.convertTo(blocoQuantizadoFloat, CV_32F);
+
+    if (tipo == TipoCanal::Luminancia) {
+        tabelaQuantizacao = this->tabelaLuminancia;
+    } else if (tipo == TipoCanal::Crominancia) {
+        tabelaQuantizacao = this->tabelaCrominancia;
+    }
+
+    blocoDesquantizado = blocoQuantizadoFloat.mul(tabelaQuantizacao);
+
+    return blocoDesquantizado;
+}
+
 void JPEGdecoder::descompressaoJPEG() {
+    std::string caminhoImagem = "../ArquivosComprimidos/" + this->fileName;
     // Biblioteca auxiliar para ler os bits
-    Bitstream bs(this->fileName);
+    Bitstream bs(caminhoImagem);
     // Preencher inputBuffer
     arrayBits(bs);
     // Ler as informações do header e posicionar a variável auxiliar de ponteiro para o início do conteúdo "útil" do bitstream
@@ -585,60 +674,111 @@ void JPEGdecoder::descompressaoJPEG() {
     int DCAnterior = 0;
     // Iterar sobre cada quantidade de camada
     for (int i = 0; i < canais; i++) {
+
+        int alturaComPadding = (this->altura + 7) & -8;
+        int larguraComPadding = (this->largura + 7) & -8;
+        cv::Mat canalReconstruido(alturaComPadding, larguraComPadding, CV_32F);
         // Zera para o cálculo de cada canal i
         DCAnterior = 0;
-        // Decodificar um bloco -> 64 coeficientes (1DC e 63 AC)
-        // Primeira coeficiente-> Tabela DC
-        int categoriaDC;
-        // i = 0 significa luminância
-        if (i == 0) {
-            categoriaDC = decodificaSimbolo(TipoDecoder::LuminanciaDC);
-        } else {
-            categoriaDC = decodificaSimbolo(TipoDecoder::CrominanciaDC);
+
+        for (int y = 0; y < alturaComPadding; y += 8) {
+            for (int x = 0; x < larguraComPadding; x += 8) {
+                std::cout << "Processando o bloco: " << y << ", " << x << " do canal: " << (int)i << std::endl;
+                // Decodificar um bloco -> 64 coeficientes (1DC e 63 AC)
+                // Primeira coeficiente-> Tabela DC
+                int categoriaDC;
+                TipoCanal tipo;
+                // i = 0 significa luminância
+                if (i == 0) {
+                    categoriaDC = decodificaSimbolo(TipoDecoder::LuminanciaDC);
+                    tipo = TipoCanal::Luminancia;
+                } else {
+                    categoriaDC = decodificaSimbolo(TipoDecoder::CrominanciaDC);
+                    tipo = TipoCanal::Crominancia;
+                }
+
+                // Decodifica a diferença
+                std::string diferencaString = inputBuffer.substr(this->posicaoLeitura, categoriaDC);
+                std::cout << "Diferenca (no formato de String): " << diferencaString << std::endl;
+                std::cout << "Categoria DC: " << (int)categoriaDC << std::endl;
+                int diferencaDC = decodificaValor(diferencaString, categoriaDC);
+                int DCAtual = DCAnterior + diferencaDC;
+                DCAnterior = DCAtual;
+
+                // Próximos 63 coeficientes -> Tabela AC
+                std::vector<int> coeficientesZigZag;
+
+                while(coeficientesZigZag.size() < 63) {
+                    // Lembrando: símbolo = Z/C -> 4 bits / 4 bits
+                    uint8_t simbolo; 
+                    if (i == 0) {
+                        simbolo = decodificaSimbolo(TipoDecoder::LuminanciaAC);
+                    } else {
+                        simbolo = decodificaSimbolo(TipoDecoder::CrominanciaAC);
+                    }
+
+                    // 4 bits superiores
+                    int qtdZeros = (0xF0 & simbolo) >> 4;
+                    // 4 bits inferiores
+                    int categoriaAC = (0x0F & simbolo);
+                    
+                    // Verificar condições especiais (ZRL e EOB)
+                    if (simbolo == 0xF0) { // ZRL
+                        coeficientesZigZag.insert(coeficientesZigZag.end(), 16, 0);
+                    } else if (simbolo == 0x00) { // EOB
+                        int posicoesRestantes = 63 - coeficientesZigZag.size();
+                        coeficientesZigZag.insert(coeficientesZigZag.end(), posicoesRestantes, 0);
+                    } else {
+                        // Indica o próximo valor que vem depois dos 0s inseridos
+                        std::string valorString = inputBuffer.substr(this->posicaoLeitura, categoriaAC);
+                        int valorAC = decodificaValor(valorString, categoriaAC);
+                        // Adicionando a quantidade de 0s
+                        coeficientesZigZag.insert(coeficientesZigZag.end(), qtdZeros, 0);
+                        coeficientesZigZag.push_back(valorAC);
+                    }
+
+                }
+
+                // Preencher o bloco 8x8
+                cv::Mat blocoQuantizado = preencherBloco(DCAtual, coeficientesZigZag);
+
+                // Desquantização
+                cv::Mat blocoDesquantizado;
+                blocoDesquantizado = desquantizarBloco(blocoQuantizado, tipo);
+
+                // DCT⁻¹ e Shift Inverso (bloco 8x8 reconstruído)
+                cv::Mat blocoShift;
+                cv::dct(blocoDesquantizado, blocoShift, cv::DCT_INVERSE);
+                blocoShift += 128;
+                
+                // Preenchendo a matriz do canal com o bloco 8x8
+                cv::Rect regiaoDoBloco(x, y, 8, 8);
+                blocoShift.copyTo(canalReconstruido(regiaoDoBloco));
+                std::cout << "bloco adicionado na matriz " << std::endl;
+            }
         }
 
-        // Decodifica a diferença
-        std::string diferencaString = inputBuffer.substr(this->posicaoLeitura, categoriaDC);
-        int diferencaDC = decodificaValor(diferencaString, categoriaDC);
-        int DCAtual = DCAnterior + diferencaDC;
-        DCAnterior = DCAtual;
-
-        // Próximos 63 coeficientes -> Tabela AC
-        std::vector<int> coeficientesZigZag;
-
-        while(coeficientesZigZag.size() < 63) {
-            // Lembrando: símbolo = Z/C -> 4 bits / 4 bits
-            uint8_t simbolo; 
-            if (i == 0) {
-                simbolo = decodificaSimbolo(TipoDecoder::LuminanciaAC);
-            } else {
-                simbolo = decodificaSimbolo(TipoDecoder::CrominanciaAC);
-            }
-
-            // 4 bits superiores
-            int qtdZeros = (0xF0 & simbolo);
-            // 4 bits inferiores
-            int categoriaAC = (0x0F & simbolo);
-            
-            // Verificar condições especiais (ZRL e EOB)
-            if (simbolo == 0xF0) { // ZRL
-                coeficientesZigZag.insert(coeficientesZigZag.end(), 16, 0);
-            } else if (simbolo == 0x00) { // EOB
-                int posicoesRestantes = 63 - coeficientesZigZag.size();
-                coeficientesZigZag.insert(coeficientesZigZag.end(), posicoesRestantes, 0);
-            } else {
-                // Indica o próximo valor que vem depois dos 0s inseridos
-                std::string valorString = inputBuffer.substr(this->posicaoLeitura, categoriaAC);
-                int valorAC = decodificaValor(valorString, categoriaAC);
-                // Adicionando a quantidade de 0s
-                coeficientesZigZag.insert(coeficientesZigZag.end(), qtdZeros, 0);
-                coeficientesZigZag.push_back(valorAC);
-            }
-
-        }
-
-        // Preencher o bloco 8x8
-        
+        camadasReconstruidas.push_back(canalReconstruido);
     }
 
+    cv::Mat imagemReconstruida;
+
+    if (camadasReconstruidas.size() > 1) {
+        // Juntando os canais novamente
+        cv::Mat ycrcbFloat;
+        cv::merge(camadasReconstruidas, ycrcbFloat);
+
+        // Convertendo do formato YCrCb para BGR (OpenCV trabalha com ordem diferente do RGB)
+        cv::Mat imagemBGRFloat;
+        cv::cvtColor(ycrcbFloat, imagemBGRFloat, cv::COLOR_YCrCb2BGR);
+        imagemBGRFloat.convertTo(imagemReconstruida, CV_8U);
+    } else {
+        cv::Mat Y = camadasReconstruidas[0];
+        Y.convertTo(imagemReconstruida, CV_8U);
+    }
+
+    if (!imagemReconstruida.empty()) {
+        cv::imwrite(this->fileName + ".bmp", imagemReconstruida);
+        std::cout << "Imagem reconstruída com sucesso." << std::endl;
+    }
 }
