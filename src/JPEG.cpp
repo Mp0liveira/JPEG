@@ -1,5 +1,6 @@
 #include "../includes/JPEG.h"
 #include <vector>
+#include <filesystem>
 
 JPEG::JPEG(const std::string &inputFile) {
 
@@ -122,6 +123,7 @@ void JPEG::compressaoJPEG() {
 
     } else if (canais == 4) {
         std::cout << "Imagem em escalar RGBA. Iniciando compressão..." << std::endl;
+        canais = 3;
         cv::Mat temp;
         // Converte para 3 canais (OpenCV usa BGR ao invés de RGB)
         cv::cvtColor(imagemOriginal, temp, cv::COLOR_BGRA2BGR);
@@ -192,15 +194,6 @@ std::string JPEG::processarCanal(const cv::Mat &canal, TipoCanal tipo) {
 
         std::string valorDC = getValor(diferenca, categoria);
         std::string finalDC = codigoHuffmanDC + valorDC;
-
-        if (i == 48 && j == 40 && tipo == TipoCanal::Luminancia) {
-                std::cout << "Diferença: " << diferenca << std::endl;
-                std::cout << "Categoria: " << categoria << std::endl;
-                std::cout << "Codigo Huffman: " << codigoHuffmanDC << std::endl;
-                std::cout << "ValorDC: " << valorDC << std::endl;
-                std::cout << "FinaldDC: " << finalDC << std::endl;
-            }
-        //std::cout << "dc" << std::endl;
 
         // Codificação AC
         std::vector<int> coeficientesZigZag = zigzagAC(blocoQuantizado);
@@ -430,7 +423,10 @@ void JPEG::writeFile(const std::string &bitstream) {
         }
     }
 
-    bs.flushesToFile("../ArquivosComprimidos/" + this->fileName + ".bin");
+    std::filesystem::path imagem(this->fileName);
+    std::string caminhoParaSalvar = "../ArquivosComprimidos/" + imagem.stem().string() + ".bin";
+
+    bs.flushesToFile(caminhoParaSalvar);
 }
 
 /// -------------------------------------------------------------------------------------------------- ///
@@ -561,6 +557,7 @@ void JPEGdecoder::lerHeader() {
     this->largura = static_cast<uint16_t>(std::stoi(largura, nullptr, 2));
 
     this->posicaoLeitura = TAMANHO_HEADER;
+
 }
 
 int JPEGdecoder::decodificaSimbolo(TipoDecoder tipo) {
@@ -598,7 +595,6 @@ int JPEGdecoder::decodificaSimbolo(TipoDecoder tipo) {
             return categoria;
         }  
     }
-    std::cout << "Tipo da tabela sem correspondência de símbolo: " << tipoPRint << std::endl;
     //std::cout << "STRING NAO ENCOTNRADA NA TABELA: " << codigoAtual << std::endl;
     // Se retornar -1 tem alguma coisa muito errada...
     return -1;
@@ -616,6 +612,8 @@ int JPEGdecoder::decodificaValor(const std::string &valorString, const int &cate
         int range = 1 << categoria;
         valor = valor - (range - 1);
     }
+
+    this->posicaoLeitura += categoria;
 
     return valor;
 }
@@ -669,8 +667,6 @@ void JPEGdecoder::descompressaoJPEG() {
     arrayBits(bs);
     // Ler as informações do header e posicionar a variável auxiliar de ponteiro para o início do conteúdo "útil" do bitstream
     lerHeader();
-
-    std::cout << inputBuffer.size();
     // Armazena as camadas reconstruídas na ordem Y, Cr e Cb, se existirem
     std::vector<cv::Mat> camadasReconstruidas;
 
@@ -686,7 +682,7 @@ void JPEGdecoder::descompressaoJPEG() {
 
         for (int y = 0; y < alturaComPadding; y += 8) {
             for (int x = 0; x < larguraComPadding; x += 8) {
-                std::cout << "Processando o bloco: " << y << ", " << x << " do canal: " << (int)i << std::endl;
+                //std::cout << "Processando o bloco: " << y << ", " << x << " do canal: " << (int)i << std::endl;
                 // Decodificar um bloco -> 64 coeficientes (1DC e 63 AC)
                 // Primeira coeficiente-> Tabela DC
                 int categoriaDC;
@@ -702,8 +698,6 @@ void JPEGdecoder::descompressaoJPEG() {
 
                 // Decodifica a diferença
                 std::string diferencaString = inputBuffer.substr(this->posicaoLeitura, categoriaDC);
-                std::cout << "Diferenca (no formato de String): " << diferencaString << std::endl;
-                std::cout << "Categoria DC: " << (int)categoriaDC << std::endl;
                 int diferencaDC = decodificaValor(diferencaString, categoriaDC);
                 int DCAtual = DCAnterior + diferencaDC;
                 DCAnterior = DCAtual;
@@ -757,31 +751,61 @@ void JPEGdecoder::descompressaoJPEG() {
                 // Preenchendo a matriz do canal com o bloco 8x8
                 cv::Rect regiaoDoBloco(x, y, 8, 8);
                 blocoShift.copyTo(canalReconstruido(regiaoDoBloco));
-                std::cout << "bloco adicionado na matriz " << std::endl;
+
             }
         }
 
         camadasReconstruidas.push_back(canalReconstruido);
     }
+    /*
+    if (camadasReconstruidas.size() == 3) {
+    std::cout << "Iniciando a visualizacao dos canais individuais..." << std::endl;
 
-    cv::Mat imagemReconstruida;
+    // --- Canal Y (Luminancia) ---
+    cv::Mat canal_Y_vis;
+    // Converte de float para uchar (0-255) para poder salvar.
+    camadasReconstruidas[0].convertTo(canal_Y_vis, CV_8U);
+    cv::imwrite("../ArquivosDescomprimidos/" + this->fileName + "_1_Canal_Y.png", canal_Y_vis);
+    
+    // --- Canal Cr (Croma Vermelho) ---
+    cv::Mat canal_Cr_vis;
+    camadasReconstruidas[1].convertTo(canal_Cr_vis, CV_8U);
+    cv::imwrite("../ArquivosDescomprimidos/" + this->fileName + "_2_Canal_Cr.png", canal_Cr_vis);
+
+    // --- Canal Cb (Croma Azul) ---
+    cv::Mat canal_Cb_vis;
+    camadasReconstruidas[2].convertTo(canal_Cb_vis, CV_8U);
+    cv::imwrite("../ArquivosDescomprimidos/" + this->fileName + "_3_Canal_Cb.png", canal_Cb_vis);
+
+    std::cout << "Canais individuais salvos para depuracao." << std::endl;
+    }
+    */
+    cv::Mat imagemComPadding;
 
     if (camadasReconstruidas.size() > 1) {
         // Juntando os canais novamente
         cv::Mat ycrcbFloat;
         cv::merge(camadasReconstruidas, ycrcbFloat);
+        
+        // Converter para 8U antes de chamar cvtColor (sem isso, a imagem estava ficando rosa)
+        cv::Mat ycrcb8U;
+        ycrcbFloat.convertTo(ycrcb8U, CV_8U);
 
         // Convertendo do formato YCrCb para BGR (OpenCV trabalha com ordem diferente do RGB)
-        cv::Mat imagemBGRFloat;
-        cv::cvtColor(ycrcbFloat, imagemBGRFloat, cv::COLOR_YCrCb2BGR);
-        imagemBGRFloat.convertTo(imagemReconstruida, CV_8U);
+        cv::cvtColor(ycrcb8U, imagemComPadding, cv::COLOR_YCrCb2BGR);
     } else {
         cv::Mat Y = camadasReconstruidas[0];
-        Y.convertTo(imagemReconstruida, CV_8U);
+        Y.convertTo(imagemComPadding, CV_8U);
     }
 
+    cv::Rect blocoOriginal(0, 0, this->largura, this->altura);
+    cv::Mat imagemReconstruida = imagemComPadding(blocoOriginal).clone();
+
+    std::filesystem::path imagem(this->fileName);
+    std::string caminhoParaSalvar = "../ArquivosDescomprimidos/" + imagem.stem().string() + ".png";
+
     if (!imagemReconstruida.empty()) {
-        cv::imwrite(this->fileName + ".bmp", imagemReconstruida);
+        cv::imwrite(caminhoParaSalvar, imagemReconstruida);
         std::cout << "Imagem reconstruída com sucesso." << std::endl;
     }
 }

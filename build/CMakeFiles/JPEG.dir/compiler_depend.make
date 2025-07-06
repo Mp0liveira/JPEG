@@ -15,6 +15,7 @@ CMakeFiles/JPEG.dir/main.cpp.o: ../main.cpp \
   /usr/include/x86_64-linux-gnu/gnu/stubs.h \
   /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
   /usr/include/x86_64-linux-gnu/c++/12/bits/cpu_defines.h \
+  /usr/include/c++/12/pstl/pstl_config.h \
   /usr/include/c++/12/ostream \
   /usr/include/c++/12/ios \
   /usr/include/c++/12/iosfwd \
@@ -129,6 +130,9 @@ CMakeFiles/JPEG.dir/main.cpp.o: ../main.cpp \
   /usr/include/c++/12/ext/alloc_traits.h \
   /usr/include/c++/12/bits/alloc_traits.h \
   /usr/include/c++/12/bits/stl_construct.h \
+  /usr/include/c++/12/string_view \
+  /usr/include/c++/12/bits/functional_hash.h \
+  /usr/include/c++/12/bits/string_view.tcc \
   /usr/include/c++/12/ext/string_conversions.h \
   /usr/include/c++/12/cstdlib \
   /usr/include/stdlib.h \
@@ -160,7 +164,6 @@ CMakeFiles/JPEG.dir/main.cpp.o: ../main.cpp \
   /usr/include/asm-generic/errno-base.h \
   /usr/include/x86_64-linux-gnu/bits/types/error_t.h \
   /usr/include/c++/12/bits/charconv.h \
-  /usr/include/c++/12/bits/functional_hash.h \
   /usr/include/c++/12/bits/basic_string.tcc \
   /usr/include/c++/12/bits/locale_classes.tcc \
   /usr/include/c++/12/system_error \
@@ -215,6 +218,8 @@ CMakeFiles/JPEG.dir/main.cpp.o: ../main.cpp \
   /usr/include/c++/12/bits/stl_heap.h \
   /usr/include/c++/12/bits/stl_tempbuf.h \
   /usr/include/c++/12/bits/uniform_int_dist.h \
+  /usr/include/c++/12/pstl/glue_algorithm_defs.h \
+  /usr/include/c++/12/pstl/execution_defs.h \
   /usr/include/opencv4/opencv2/core/cvstd.hpp \
   /usr/include/c++/12/cstring \
   /usr/include/string.h \
@@ -232,6 +237,19 @@ CMakeFiles/JPEG.dir/main.cpp.o: ../main.cpp \
   /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
   /usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h \
   /usr/include/x86_64-linux-gnu/bits/iscanonical.h \
+  /usr/include/c++/12/bits/specfun.h \
+  /usr/include/c++/12/tr1/gamma.tcc \
+  /usr/include/c++/12/tr1/special_function_util.h \
+  /usr/include/c++/12/tr1/bessel_function.tcc \
+  /usr/include/c++/12/tr1/beta_function.tcc \
+  /usr/include/c++/12/tr1/ell_integral.tcc \
+  /usr/include/c++/12/tr1/exp_integral.tcc \
+  /usr/include/c++/12/tr1/hypergeometric.tcc \
+  /usr/include/c++/12/tr1/legendre_function.tcc \
+  /usr/include/c++/12/tr1/modified_bessel_func.tcc \
+  /usr/include/c++/12/tr1/poly_hermite.tcc \
+  /usr/include/c++/12/tr1/poly_laguerre.tcc \
+  /usr/include/c++/12/tr1/riemann_zeta.tcc \
   /usr/include/opencv4/opencv2/core/cvstd_wrapper.hpp \
   /usr/include/c++/12/memory \
   /usr/include/c++/12/bits/stl_uninitialized.h \
@@ -250,6 +268,7 @@ CMakeFiles/JPEG.dir/main.cpp.o: ../main.cpp \
   /usr/include/c++/12/bits/atomic_base.h \
   /usr/include/c++/12/bits/atomic_lockfree_defines.h \
   /usr/include/c++/12/backward/auto_ptr.h \
+  /usr/include/c++/12/pstl/glue_memory_defs.h \
   /usr/include/opencv4/opencv2/core/neon_utils.hpp \
   /usr/include/opencv4/opencv2/core/vsx_utils.hpp \
   /usr/include/assert.h \
@@ -277,6 +296,13 @@ CMakeFiles/JPEG.dir/main.cpp.o: ../main.cpp \
   /usr/include/opencv4/opencv2/core/utility.hpp \
   /usr/include/c++/12/functional \
   /usr/include/c++/12/bits/std_function.h \
+  /usr/include/c++/12/unordered_map \
+  /usr/include/c++/12/bits/hashtable.h \
+  /usr/include/c++/12/bits/hashtable_policy.h \
+  /usr/include/c++/12/bits/enable_special_members.h \
+  /usr/include/c++/12/bits/node_handle.h \
+  /usr/include/c++/12/bits/unordered_map.h \
+  /usr/include/c++/12/bits/erase_if.h \
   /usr/include/c++/12/mutex \
   /usr/include/c++/12/bits/chrono.h \
   /usr/include/c++/12/ratio \
@@ -303,7 +329,6 @@ CMakeFiles/JPEG.dir/main.cpp.o: ../main.cpp \
   /usr/include/c++/12/bits/stl_tree.h \
   /usr/include/c++/12/bits/stl_map.h \
   /usr/include/c++/12/bits/stl_multimap.h \
-  /usr/include/c++/12/bits/erase_if.h \
   /usr/include/opencv4/opencv2/dnn/layer.hpp \
   /usr/include/opencv4/opencv2/dnn/dnn.inl.hpp \
   /usr/include/opencv4/opencv2/dnn/utils/inference_engine.hpp \
@@ -326,11 +351,6 @@ CMakeFiles/JPEG.dir/main.cpp.o: ../main.cpp \
   /usr/include/opencv4/opencv2/flann/dynamic_bitset.h \
   /usr/include/opencv4/opencv2/flann/dist.h \
   /usr/include/opencv4/opencv2/flann/heap.h \
-  /usr/include/c++/12/unordered_map \
-  /usr/include/c++/12/bits/hashtable.h \
-  /usr/include/c++/12/bits/hashtable_policy.h \
-  /usr/include/c++/12/bits/enable_special_members.h \
-  /usr/include/c++/12/bits/unordered_map.h \
   /usr/include/opencv4/opencv2/flann/allocator.h \
   /usr/include/opencv4/opencv2/flann/random.h \
   /usr/include/opencv4/opencv2/flann/kdtree_single_index.h \
@@ -414,6 +434,7 @@ CMakeFiles/JPEG.dir/src/JPEG.cpp.o: ../src/JPEG.cpp \
   /usr/include/x86_64-linux-gnu/gnu/stubs.h \
   /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
   /usr/include/x86_64-linux-gnu/c++/12/bits/cpu_defines.h \
+  /usr/include/c++/12/pstl/pstl_config.h \
   /usr/include/c++/12/bits/stringfwd.h \
   /usr/include/c++/12/bits/memoryfwd.h \
   /usr/include/c++/12/bits/char_traits.h \
@@ -486,6 +507,10 @@ CMakeFiles/JPEG.dir/src/JPEG.cpp.o: ../src/JPEG.cpp \
   /usr/include/c++/12/ext/alloc_traits.h \
   /usr/include/c++/12/bits/alloc_traits.h \
   /usr/include/c++/12/bits/stl_construct.h \
+  /usr/include/c++/12/string_view \
+  /usr/include/c++/12/bits/functional_hash.h \
+  /usr/include/c++/12/bits/hash_bytes.h \
+  /usr/include/c++/12/bits/string_view.tcc \
   /usr/include/c++/12/ext/string_conversions.h \
   /usr/include/c++/12/cstdlib \
   /usr/include/stdlib.h \
@@ -530,8 +555,6 @@ CMakeFiles/JPEG.dir/src/JPEG.cpp.o: ../src/JPEG.cpp \
   /usr/include/asm-generic/errno-base.h \
   /usr/include/x86_64-linux-gnu/bits/types/error_t.h \
   /usr/include/c++/12/bits/charconv.h \
-  /usr/include/c++/12/bits/functional_hash.h \
-  /usr/include/c++/12/bits/hash_bytes.h \
   /usr/include/c++/12/bits/basic_string.tcc \
   /usr/include/opencv4/opencv2/opencv.hpp \
   /usr/include/opencv4/opencv2/opencv_modules.hpp \
@@ -567,6 +590,8 @@ CMakeFiles/JPEG.dir/src/JPEG.cpp.o: ../src/JPEG.cpp \
   /usr/include/c++/12/bits/stl_heap.h \
   /usr/include/c++/12/bits/stl_tempbuf.h \
   /usr/include/c++/12/bits/uniform_int_dist.h \
+  /usr/include/c++/12/pstl/glue_algorithm_defs.h \
+  /usr/include/c++/12/pstl/execution_defs.h \
   /usr/include/opencv4/opencv2/core/cvstd.hpp \
   /usr/include/c++/12/cstring \
   /usr/include/string.h \
@@ -584,6 +609,19 @@ CMakeFiles/JPEG.dir/src/JPEG.cpp.o: ../src/JPEG.cpp \
   /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
   /usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h \
   /usr/include/x86_64-linux-gnu/bits/iscanonical.h \
+  /usr/include/c++/12/bits/specfun.h \
+  /usr/include/c++/12/tr1/gamma.tcc \
+  /usr/include/c++/12/tr1/special_function_util.h \
+  /usr/include/c++/12/tr1/bessel_function.tcc \
+  /usr/include/c++/12/tr1/beta_function.tcc \
+  /usr/include/c++/12/tr1/ell_integral.tcc \
+  /usr/include/c++/12/tr1/exp_integral.tcc \
+  /usr/include/c++/12/tr1/hypergeometric.tcc \
+  /usr/include/c++/12/tr1/legendre_function.tcc \
+  /usr/include/c++/12/tr1/modified_bessel_func.tcc \
+  /usr/include/c++/12/tr1/poly_hermite.tcc \
+  /usr/include/c++/12/tr1/poly_laguerre.tcc \
+  /usr/include/c++/12/tr1/riemann_zeta.tcc \
   /usr/include/opencv4/opencv2/core/cvstd_wrapper.hpp \
   /usr/include/c++/12/memory \
   /usr/include/c++/12/bits/stl_uninitialized.h \
@@ -624,6 +662,7 @@ CMakeFiles/JPEG.dir/src/JPEG.cpp.o: ../src/JPEG.cpp \
   /usr/include/c++/12/bits/atomic_base.h \
   /usr/include/c++/12/bits/atomic_lockfree_defines.h \
   /usr/include/c++/12/backward/auto_ptr.h \
+  /usr/include/c++/12/pstl/glue_memory_defs.h \
   /usr/include/opencv4/opencv2/core/neon_utils.hpp \
   /usr/include/opencv4/opencv2/core/vsx_utils.hpp \
   /usr/include/assert.h \
@@ -674,6 +713,13 @@ CMakeFiles/JPEG.dir/src/JPEG.cpp.o: ../src/JPEG.cpp \
   /usr/include/opencv4/opencv2/core/utility.hpp \
   /usr/include/c++/12/functional \
   /usr/include/c++/12/bits/std_function.h \
+  /usr/include/c++/12/unordered_map \
+  /usr/include/c++/12/bits/hashtable.h \
+  /usr/include/c++/12/bits/hashtable_policy.h \
+  /usr/include/c++/12/bits/enable_special_members.h \
+  /usr/include/c++/12/bits/node_handle.h \
+  /usr/include/c++/12/bits/unordered_map.h \
+  /usr/include/c++/12/bits/erase_if.h \
   /usr/include/c++/12/mutex \
   /usr/include/c++/12/bits/chrono.h \
   /usr/include/c++/12/ratio \
@@ -700,7 +746,6 @@ CMakeFiles/JPEG.dir/src/JPEG.cpp.o: ../src/JPEG.cpp \
   /usr/include/c++/12/bits/stl_tree.h \
   /usr/include/c++/12/bits/stl_map.h \
   /usr/include/c++/12/bits/stl_multimap.h \
-  /usr/include/c++/12/bits/erase_if.h \
   /usr/include/opencv4/opencv2/dnn/layer.hpp \
   /usr/include/opencv4/opencv2/dnn/dnn.inl.hpp \
   /usr/include/opencv4/opencv2/dnn/utils/inference_engine.hpp \
@@ -724,11 +769,6 @@ CMakeFiles/JPEG.dir/src/JPEG.cpp.o: ../src/JPEG.cpp \
   /usr/include/opencv4/opencv2/flann/dynamic_bitset.h \
   /usr/include/opencv4/opencv2/flann/dist.h \
   /usr/include/opencv4/opencv2/flann/heap.h \
-  /usr/include/c++/12/unordered_map \
-  /usr/include/c++/12/bits/hashtable.h \
-  /usr/include/c++/12/bits/hashtable_policy.h \
-  /usr/include/c++/12/bits/enable_special_members.h \
-  /usr/include/c++/12/bits/unordered_map.h \
   /usr/include/opencv4/opencv2/flann/allocator.h \
   /usr/include/opencv4/opencv2/flann/random.h \
   /usr/include/opencv4/opencv2/flann/kdtree_single_index.h \
@@ -795,7 +835,13 @@ CMakeFiles/JPEG.dir/src/JPEG.cpp.o: ../src/JPEG.cpp \
   /usr/include/opencv4/opencv2/video.hpp \
   /usr/include/opencv4/opencv2/video/tracking.hpp \
   /usr/include/opencv4/opencv2/video/background_segm.hpp \
-  ../includes/ac_bitstream.h
+  ../includes/ac_bitstream.h \
+  /usr/include/c++/12/filesystem \
+  /usr/include/c++/12/bits/fs_fwd.h \
+  /usr/include/c++/12/bits/fs_path.h \
+  /usr/include/c++/12/codecvt \
+  /usr/include/c++/12/bits/fs_dir.h \
+  /usr/include/c++/12/bits/fs_ops.h
 
 CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o: ../src/ac_bitstream.cpp \
   /usr/include/stdc-predef.h \
@@ -811,6 +857,7 @@ CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o: ../src/ac_bitstream.cpp \
   /usr/include/x86_64-linux-gnu/gnu/stubs.h \
   /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
   /usr/include/x86_64-linux-gnu/c++/12/bits/cpu_defines.h \
+  /usr/include/c++/12/pstl/pstl_config.h \
   /usr/include/c++/12/ostream \
   /usr/include/c++/12/ios \
   /usr/include/c++/12/iosfwd \
@@ -925,6 +972,9 @@ CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o: ../src/ac_bitstream.cpp \
   /usr/include/c++/12/ext/alloc_traits.h \
   /usr/include/c++/12/bits/alloc_traits.h \
   /usr/include/c++/12/bits/stl_construct.h \
+  /usr/include/c++/12/string_view \
+  /usr/include/c++/12/bits/functional_hash.h \
+  /usr/include/c++/12/bits/string_view.tcc \
   /usr/include/c++/12/ext/string_conversions.h \
   /usr/include/c++/12/cstdlib \
   /usr/include/stdlib.h \
@@ -956,7 +1006,6 @@ CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o: ../src/ac_bitstream.cpp \
   /usr/include/asm-generic/errno-base.h \
   /usr/include/x86_64-linux-gnu/bits/types/error_t.h \
   /usr/include/c++/12/bits/charconv.h \
-  /usr/include/c++/12/bits/functional_hash.h \
   /usr/include/c++/12/bits/basic_string.tcc \
   /usr/include/c++/12/bits/locale_classes.tcc \
   /usr/include/c++/12/system_error \
@@ -996,6 +1045,10 @@ CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o: ../src/ac_bitstream.cpp \
 
 /usr/include/c++/12/fstream:
 
+/usr/include/c++/12/bits/fs_dir.h:
+
+/usr/include/c++/12/codecvt:
+
 ../src/JPEG.cpp:
 
 /usr/include/opencv4/opencv2/stitching/detail/seam_finders.hpp:
@@ -1005,6 +1058,8 @@ CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o: ../src/ac_bitstream.cpp \
 /usr/include/c++/12/queue:
 
 /usr/include/c++/12/bits/list.tcc:
+
+/usr/include/c++/12/filesystem:
 
 /usr/include/opencv4/opencv2/video/background_segm.hpp:
 
@@ -1044,17 +1099,7 @@ CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o: ../src/ac_bitstream.cpp \
 
 /usr/include/opencv4/opencv2/flann/composite_index.h:
 
-/usr/include/opencv4/opencv2/flann/kdtree_single_index.h:
-
 /usr/include/opencv4/opencv2/flann/allocator.h:
-
-/usr/include/c++/12/bits/unordered_map.h:
-
-/usr/include/c++/12/bits/enable_special_members.h:
-
-/usr/include/c++/12/bits/hashtable.h:
-
-/usr/include/c++/12/unordered_map:
 
 /usr/include/opencv4/opencv2/flann/heap.h:
 
@@ -1078,19 +1123,11 @@ CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o: ../src/ac_bitstream.cpp \
 
 /usr/include/opencv4/opencv2/flann/matrix.h:
 
-/usr/include/opencv4/opencv2/flann/general.h:
-
 /usr/include/opencv4/opencv2/flann/flann_base.hpp:
-
-/usr/include/c++/12/bits/hashtable_policy.h:
-
-/usr/include/opencv4/opencv2/flann.hpp:
 
 /usr/include/opencv4/opencv2/dnn/dnn.inl.hpp:
 
 /usr/include/opencv4/opencv2/dnn/layer.hpp:
-
-/usr/include/c++/12/bits/erase_if.h:
 
 /usr/include/c++/12/bits/stl_multimap.h:
 
@@ -1124,6 +1161,20 @@ CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o: ../src/ac_bitstream.cpp \
 
 /usr/include/c++/12/mutex:
 
+/usr/include/c++/12/bits/erase_if.h:
+
+/usr/include/c++/12/bits/unordered_map.h:
+
+/usr/include/c++/12/bits/enable_special_members.h:
+
+/usr/include/opencv4/opencv2/flann.hpp:
+
+/usr/include/c++/12/bits/hashtable_policy.h:
+
+/usr/include/c++/12/bits/hashtable.h:
+
+/usr/include/c++/12/unordered_map:
+
 /usr/include/c++/12/bits/std_function.h:
 
 /usr/include/opencv4/opencv2/stitching/detail/exposure_compensate.hpp:
@@ -1152,6 +1203,32 @@ CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o: ../src/ac_bitstream.cpp \
 
 /usr/include/c++/12/cfloat:
 
+/usr/include/opencv4/opencv2/core/fast_math.hpp:
+
+/usr/include/opencv4/opencv2/core/saturate.hpp:
+
+/usr/include/opencv4/opencv2/core/matx.hpp:
+
+/usr/include/opencv4/opencv2/core/check.hpp:
+
+/usr/include/assert.h:
+
+/usr/include/opencv4/opencv2/core/vsx_utils.hpp:
+
+/usr/include/opencv4/opencv2/core/neon_utils.hpp:
+
+/usr/include/c++/12/pstl/glue_memory_defs.h:
+
+/usr/include/c++/12/backward/auto_ptr.h:
+
+/usr/include/c++/12/bits/atomic_lockfree_defines.h:
+
+/usr/include/c++/12/ext/concurrence.h:
+
+/usr/include/c++/12/bits/shared_ptr_base.h:
+
+/usr/include/c++/12/bits/shared_ptr.h:
+
 /usr/include/c++/12/bits/basic_string.h:
 
 /usr/include/c++/12/bits/range_access.h:
@@ -1168,6 +1245,10 @@ CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o: ../src/ac_bitstream.cpp \
 
 /usr/include/c++/12/stdlib.h:
 
+/usr/include/opencv4/opencv2/core/traits.hpp:
+
+/usr/include/c++/12/pstl/pstl_config.h:
+
 /usr/include/c++/12/bits/stl_function.h:
 
 /usr/include/c++/12/iomanip:
@@ -1182,9 +1263,13 @@ CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o: ../src/ac_bitstream.cpp \
 
 /usr/include/c++/12/bits/uses_allocator.h:
 
-/usr/include/x86_64-linux-gnu/bits/uio_lim.h:
+/usr/include/opencv4/opencv2/flann/hierarchical_clustering_index.h:
 
-/usr/include/opencv4/opencv2/core/fast_math.hpp:
+/usr/include/c++/12/bits/atomic_base.h:
+
+/usr/include/x86_64-linux-gnu/c++/12/bits/ctype_base.h:
+
+/usr/include/x86_64-linux-gnu/bits/uio_lim.h:
 
 /usr/include/c++/12/bits/cxxabi_forced.h:
 
@@ -1220,8 +1305,6 @@ CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o: ../src/ac_bitstream.cpp \
 
 /usr/include/x86_64-linux-gnu/gnu/stubs.h:
 
-/usr/include/opencv4/opencv2/core/traits.hpp:
-
 /usr/include/x86_64-linux-gnu/sys/single_threaded.h:
 
 /usr/include/opencv4/opencv2/core/cuda.hpp:
@@ -1234,6 +1317,8 @@ CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o: ../src/ac_bitstream.cpp \
 
 /usr/include/c++/12/string:
 
+/usr/include/c++/12/bits/node_handle.h:
+
 /usr/include/c++/12/ext/atomicity.h:
 
 /usr/include/opencv4/opencv2/core/cuda.inl.hpp:
@@ -1243,8 +1328,6 @@ CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o: ../src/ac_bitstream.cpp \
 /usr/include/c++/12/initializer_list:
 
 /usr/include/x86_64-linux-gnu/bits/xopen_lim.h:
-
-/usr/include/c++/12/bits/shared_ptr.h:
 
 /usr/include/opencv4/opencv2/stitching/detail/warpers.hpp:
 
@@ -1286,15 +1369,9 @@ CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o: ../src/ac_bitstream.cpp \
 
 /usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h:
 
+/usr/include/c++/12/bits/fs_path.h:
+
 /usr/include/locale.h:
-
-/usr/include/c++/12/backward/auto_ptr.h:
-
-/usr/include/c++/12/bits/stl_iterator_base_funcs.h:
-
-/usr/include/pthread.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/12/include/syslimits.h:
 
 /usr/include/c++/12/cstdio:
 
@@ -1312,15 +1389,11 @@ CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o: ../src/ac_bitstream.cpp \
 
 /usr/include/x86_64-linux-gnu/bits/locale.h:
 
-/usr/include/c++/12/bits/localefwd.h:
-
-/usr/include/wchar.h:
-
-/usr/include/c++/12/cwchar:
-
 /usr/include/opencv4/opencv2/flann/logger.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/wint_t.h:
+
+/usr/include/wchar.h:
 
 /usr/include/c++/12/set:
 
@@ -1340,6 +1413,10 @@ CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o: ../src/ac_bitstream.cpp \
 
 /usr/include/linux/errno.h:
 
+/usr/include/c++/12/ext/aligned_buffer.h:
+
+/usr/include/features-time64.h:
+
 /usr/include/c++/12/cctype:
 
 /usr/include/opencv4/opencv2/videoio.hpp:
@@ -1348,17 +1425,35 @@ CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o: ../src/ac_bitstream.cpp \
 
 /usr/include/c++/12/istream:
 
-/usr/include/opencv4/opencv2/flann/hierarchical_clustering_index.h:
-
-/usr/include/x86_64-linux-gnu/c++/12/bits/ctype_base.h:
-
-/usr/include/c++/12/bits/atomic_base.h:
-
 /usr/include/c++/12/ios:
 
-/usr/include/opencv4/opencv2/core/vsx_utils.hpp:
+/usr/include/c++/12/bits/stl_iterator_base_funcs.h:
+
+/usr/include/pthread.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/12/include/syslimits.h:
+
+/usr/include/opencv4/opencv2/flann/dist.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/12/include/stdarg.h:
+
+/usr/include/x86_64-linux-gnu/bits/libc-header-start.h:
+
+/usr/include/opencv4/opencv2/flann/lsh_table.h:
+
+/usr/include/c++/12/bits/chrono.h:
+
+/usr/include/c++/12/clocale:
+
+/usr/include/c++/12/cstdint:
+
+/usr/include/c++/12/bits/stl_relops.h:
+
+/usr/include/x86_64-linux-gnu/bits/mathcalls.h:
 
 /usr/include/c++/12/ostream:
+
+/usr/include/c++/12/tr1/special_function_util.h:
 
 ../main.cpp:
 
@@ -1375,18 +1470,6 @@ CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o: ../src/ac_bitstream.cpp \
 /usr/include/x86_64-linux-gnu/bits/types.h:
 
 /usr/include/x86_64-linux-gnu/bits/stdint-intn.h:
-
-/usr/include/x86_64-linux-gnu/bits/libc-header-start.h:
-
-/usr/include/opencv4/opencv2/flann/lsh_table.h:
-
-/usr/include/c++/12/bits/chrono.h:
-
-/usr/include/c++/12/clocale:
-
-/usr/include/opencv4/opencv2/flann/dist.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/12/include/stdarg.h:
 
 /usr/include/stdc-predef.h:
 
@@ -1429,6 +1512,8 @@ CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o: ../src/ac_bitstream.cpp \
 /usr/include/x86_64-linux-gnu/bits/types/locale_t.h:
 
 /usr/include/x86_64-linux-gnu/c++/12/bits/gthr.h:
+
+/usr/include/c++/12/tr1/beta_function.tcc:
 
 /usr/include/x86_64-linux-gnu/c++/12/bits/basic_file.h:
 
@@ -1492,6 +1577,10 @@ CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o: ../src/ac_bitstream.cpp \
 
 /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h:
 
+/usr/include/opencv4/opencv2/flann/general.h:
+
+/usr/include/c++/12/tr1/poly_hermite.tcc:
+
 /usr/include/c++/12/bits/locale_classes.h:
 
 /usr/include/c++/12/backward/binders.h:
@@ -1510,21 +1599,21 @@ CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o: ../src/ac_bitstream.cpp \
 
 /usr/include/c++/12/typeinfo:
 
+/usr/include/c++/12/bits/allocated_ptr.h:
+
+/usr/include/c++/12/bits/nested_exception.h:
+
 /usr/include/linux/limits.h:
 
 /usr/include/x86_64-linux-gnu/bits/posix2_lim.h:
 
 /usr/include/c++/12/bits/char_traits.h:
 
-/usr/include/c++/12/cstdint:
-
-/usr/include/c++/12/bits/stl_relops.h:
-
-/usr/include/x86_64-linux-gnu/bits/mathcalls.h:
-
 /usr/include/c++/12/ratio:
 
 /usr/lib/gcc/x86_64-linux-gnu/12/include/stdint.h:
+
+/usr/include/c++/12/tr1/exp_integral.tcc:
 
 /usr/include/c++/12/bits/unique_lock.h:
 
@@ -1538,9 +1627,13 @@ CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o: ../src/ac_bitstream.cpp \
 
 /usr/include/x86_64-linux-gnu/bits/time64.h:
 
-/usr/include/c++/12/bits/atomic_lockfree_defines.h:
-
 /usr/include/c++/12/bits/stl_construct.h:
+
+/usr/include/c++/12/tuple:
+
+/usr/include/c++/12/bits/functional_hash.h:
+
+/usr/include/stdio.h:
 
 /usr/include/c++/12/bits/vector.tcc:
 
@@ -1560,8 +1653,6 @@ CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o: ../src/ac_bitstream.cpp \
 
 /usr/include/opencv4/opencv2/core/cvdef.h:
 
-/usr/include/stdlib.h:
-
 /usr/include/opencv4/opencv2/stitching/detail/camera.hpp:
 
 /usr/include/c++/12/chrono:
@@ -1580,13 +1671,13 @@ CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o: ../src/ac_bitstream.cpp \
 
 /usr/include/stdint.h:
 
+/usr/include/c++/12/bits/string_view.tcc:
+
 /usr/include/endian.h:
 
 /usr/include/x86_64-linux-gnu/bits/atomic_wide_counter.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/12/include/limits.h:
-
-/usr/include/c++/12/ext/concurrence.h:
 
 /usr/include/x86_64-linux-gnu/bits/uintn-identity.h:
 
@@ -1601,8 +1692,6 @@ CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o: ../src/ac_bitstream.cpp \
 /usr/include/x86_64-linux-gnu/bits/types/sigset_t.h:
 
 /usr/include/alloca.h:
-
-/usr/include/stdio.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h:
 
@@ -1652,27 +1741,27 @@ CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o: ../src/ac_bitstream.cpp \
 
 /usr/include/c++/12/bits/basic_ios.h:
 
+/usr/include/c++/12/pstl/execution_defs.h:
+
+/usr/include/c++/12/string_view:
+
 /usr/include/c++/12/bits/locale_facets.h:
 
 /usr/include/opencv4/opencv2/objdetect.hpp:
 
 /usr/include/c++/12/bits/ostream.tcc:
 
-/usr/include/c++/12/bits/functional_hash.h:
-
-/usr/include/c++/12/tuple:
-
-/usr/include/c++/12/cwctype:
-
 /usr/include/c++/12/bits/unique_ptr.h:
 
 /usr/include/c++/12/bits/streambuf_iterator.h:
 
-/usr/include/c++/12/bits/basic_ios.tcc:
-
 ../includes/JPEG.h:
 
 /usr/include/opencv4/opencv2/opencv.hpp:
+
+/usr/include/c++/12/bits/shared_ptr_atomic.h:
+
+/usr/include/opencv4/opencv2/opencv_modules.hpp:
 
 /usr/include/opencv4/opencv2/core/version.hpp:
 
@@ -1706,9 +1795,15 @@ CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o: ../src/ac_bitstream.cpp \
 
 /usr/include/c++/12/bits/algorithmfwd.h:
 
+/usr/include/c++/12/bits/fs_ops.h:
+
 /usr/include/c++/12/bits/stl_heap.h:
 
 /usr/include/c++/12/bits/stl_tempbuf.h:
+
+/usr/include/c++/12/bits/localefwd.h:
+
+/usr/include/c++/12/pstl/glue_algorithm_defs.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/12/include/float.h:
 
@@ -1732,6 +1827,8 @@ CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o: ../src/ac_bitstream.cpp \
 
 /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h:
 
+/usr/include/c++/12/bits/fs_fwd.h:
+
 /usr/include/x86_64-linux-gnu/bits/flt-eval-method.h:
 
 /usr/include/x86_64-linux-gnu/bits/fp-fast.h:
@@ -1739,6 +1836,34 @@ CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o: ../src/ac_bitstream.cpp \
 /usr/include/opencv4/opencv2/flann/saving.h:
 
 /usr/include/x86_64-linux-gnu/bits/iscanonical.h:
+
+/usr/include/opencv4/opencv2/flann/kdtree_single_index.h:
+
+/usr/include/c++/12/bits/specfun.h:
+
+/usr/include/c++/12/tr1/gamma.tcc:
+
+/usr/include/c++/12/cwchar:
+
+/usr/include/c++/12/tr1/bessel_function.tcc:
+
+/usr/include/c++/12/tr1/ell_integral.tcc:
+
+/usr/include/c++/12/cwctype:
+
+/usr/include/c++/12/tr1/hypergeometric.tcc:
+
+/usr/include/c++/12/tr1/legendre_function.tcc:
+
+/usr/include/stdlib.h:
+
+/usr/include/c++/12/tr1/modified_bessel_func.tcc:
+
+/usr/include/c++/12/tr1/poly_laguerre.tcc:
+
+/usr/include/c++/12/bits/basic_ios.tcc:
+
+/usr/include/c++/12/tr1/riemann_zeta.tcc:
 
 /usr/include/c++/12/bits/exception_defines.h:
 
@@ -1759,27 +1884,3 @@ CMakeFiles/JPEG.dir/src/ac_bitstream.cpp.o: ../src/ac_bitstream.cpp \
 /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h:
 
 /usr/include/c++/12/bit:
-
-/usr/include/c++/12/bits/shared_ptr_base.h:
-
-/usr/include/c++/12/bits/nested_exception.h:
-
-/usr/include/c++/12/bits/allocated_ptr.h:
-
-/usr/include/opencv4/opencv2/core/neon_utils.hpp:
-
-/usr/include/features-time64.h:
-
-/usr/include/c++/12/ext/aligned_buffer.h:
-
-/usr/include/opencv4/opencv2/opencv_modules.hpp:
-
-/usr/include/c++/12/bits/shared_ptr_atomic.h:
-
-/usr/include/assert.h:
-
-/usr/include/opencv4/opencv2/core/check.hpp:
-
-/usr/include/opencv4/opencv2/core/matx.hpp:
-
-/usr/include/opencv4/opencv2/core/saturate.hpp:

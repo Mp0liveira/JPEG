@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(JPEGCompression)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 # O find_package vai encontrar o OpenCV instalado pelo apt-get sem nenhum esforço.
 find_package(OpenCV REQUIRED)
