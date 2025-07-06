@@ -34,9 +34,8 @@ JPEG::JPEG(const std::string &inputFile) {
     cv::Mat tempCrominancia(8, 8, CV_8UC1, dadosCrominancia);
     tempCrominancia.convertTo(this->tabelaCrominancia, CV_32F);
 
-    // --- 2. Inicialização das Tabelas de Huffman ---
+    // Informações para as tabelas de Huffman
 
-    // Dados brutos (bits e huffval)
     std::vector<int> bitsLuminanciaDC = {0, 1, 5, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0};
     std::vector<unsigned char> huffvalLuminanciaDC = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
     
@@ -166,17 +165,14 @@ std::string JPEG::processarCanal(const cv::Mat &canal, TipoCanal tipo) {
         cv::Mat blocoShift;
         bloco8x8.convertTo(blocoShift, CV_32F); // Converter para float pois a matriz original é uint8_t
         blocoShift -= 128;
-        //std::cout << "level shift" << std::endl;
 
         // DCT
         cv::Mat blocoDCT;
         cv::dct(blocoShift, blocoDCT); // Aplica a DCT
-        //std::cout << "cdt" << std::endl;
 
         // Quantização
         cv::Mat blocoQuantizado;
         blocoQuantizado = quantizarBloco(blocoDCT, tipo);
-        //std::cout << "quantizacao" << std::endl;
 
         // Codificação DC
         int DCAtual = blocoQuantizado.at<int>(0, 0);
@@ -197,12 +193,10 @@ std::string JPEG::processarCanal(const cv::Mat &canal, TipoCanal tipo) {
 
         // Codificação AC
         std::vector<int> coeficientesZigZag = zigzagAC(blocoQuantizado);
-        //std::cout << "zigzag" << std::endl;
         std::string finalAC = codificarAC(coeficientesZigZag, tipo);
 
         bitstreamCanal += finalDC;
         bitstreamCanal += finalAC;
-        //std::cout << "ac" << std::endl;
         }
     }
 
@@ -463,7 +457,8 @@ JPEGdecoder::JPEGdecoder(const std::string &inputFile) {
 
     cv::Mat tempCrominancia(8, 8, CV_8UC1, dadosCrominancia);
     tempCrominancia.convertTo(this->tabelaCrominancia, CV_32F);
-    // Dados brutos (bits e huffval)
+
+    // Informações para a tabela de Huffman
     std::vector<int> bitsLuminanciaDC = {0, 1, 5, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0};
     std::vector<unsigned char> huffvalLuminanciaDC = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
     
@@ -563,24 +558,19 @@ void JPEGdecoder::lerHeader() {
 int JPEGdecoder::decodificaSimbolo(TipoDecoder tipo) {
     std::string codigoAtual = "";
     std::map<std::string, int> tabelaDecode;
-    int tipoPRint;
 
     switch (tipo) {
     case TipoDecoder::LuminanciaDC:
         tabelaDecode = tabelaDecodeLuminanciaDC;
-        tipoPRint = 0;
         break;
     case TipoDecoder::LuminanciaAC:
         tabelaDecode = tabelaDecodeLuminanciaAC;
-        tipoPRint = 1;
         break;
     case TipoDecoder::CrominanciaDC:
         tabelaDecode = tabelaDecodeCrominanciaDC;
-        tipoPRint = 2;
         break;
     case TipoDecoder::CrominanciaAC:
         tabelaDecode = tabelaDecodeCrominanciaAC;
-        tipoPRint = 3;
         break;
     }
 
@@ -595,7 +585,7 @@ int JPEGdecoder::decodificaSimbolo(TipoDecoder tipo) {
             return categoria;
         }  
     }
-    //std::cout << "STRING NAO ENCOTNRADA NA TABELA: " << codigoAtual << std::endl;
+
     // Se retornar -1 tem alguma coisa muito errada...
     return -1;
 }
@@ -682,7 +672,6 @@ void JPEGdecoder::descompressaoJPEG() {
 
         for (int y = 0; y < alturaComPadding; y += 8) {
             for (int x = 0; x < larguraComPadding; x += 8) {
-                //std::cout << "Processando o bloco: " << y << ", " << x << " do canal: " << (int)i << std::endl;
                 // Decodificar um bloco -> 64 coeficientes (1DC e 63 AC)
                 // Primeira coeficiente-> Tabela DC
                 int categoriaDC;
